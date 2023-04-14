@@ -14,6 +14,9 @@
   "bin": {
     "pman": "bin/index.js"
   },
+  "scripts": {
+    "test": "echo \"No test specified\""
+  },
   "type": "module",
   "author": "Mikadifo",
   "license": "ISC",
