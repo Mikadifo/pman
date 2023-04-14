@@ -1,0 +1,15 @@
+{
+  "name": "projects-manager",
+  "version": "0.0.1",
+  "description": "A cli that helps you list your projects and open one.",
+  "main": "bin/index.js",
+  "bin": {
+    "pman": "./bin/index.js"
+  },
+  "type": "module",
+  "author": "Mikadifo",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^9.1.5"
+  }
+}
