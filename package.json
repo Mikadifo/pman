@@ -2,6 +2,14 @@
   "name": "@mikadifo/pman",
   "version": "0.0.1",
   "description": "A cli that helps you list your projects and open one.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mikadifo/pman"
+  },
+  "keywords": [
+    "projectsManager",
+    "projectOpener"
+  ],
   "main": "bin/index.js",
   "bin": {
     "pman": "bin/index.js"
