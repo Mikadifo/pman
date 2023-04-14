@@ -1,5 +1,5 @@
 {
-  "name": "@mikadifo/projects-manager",
+  "name": "@mikadifo/pman",
   "version": "0.0.1",
   "description": "A cli that helps you list your projects and open one.",
   "main": "bin/index.js",
