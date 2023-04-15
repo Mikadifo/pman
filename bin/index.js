@@ -10,54 +10,65 @@ const configFilePath = path.join(os.homedir(), "/pmanrc.json");
 const configExists = fs.existsSync(configFilePath);
 
 const openProject = (projectPath) => {
-  spawn("open", ["-a", "iTerm", projectPath]);
-  console.log("Project opened");
+  spawn("open", ["-na", "iTerm", projectPath]);
+  console.log("Project opened.");
 };
 
 const showProjects = () => {
-  const projectsFolder = JSON.parse(
-    fs.readFileSync(configFilePath, "utf8")
-  ).projectDir;
-  const files = fs.readdirSync(projectsFolder);
-  const projects = files.filter((file) =>
-    fs.statSync(path.join(projectsFolder, file)).isDirectory()
-  );
+  const configFile = JSON.parse(fs.readFileSync(configFilePath, "utf8"));
 
   inquirer
     .prompt([
       {
         type: "list",
+        name: "directory",
+        message: "Choose a directory:",
+        choices: configFile.projectsDirs,
+      },
+      {
+        type: "list",
         name: "project",
-        message: "Choose a project",
-        choices: projects,
+        message: "Choose a project:",
+        choices: (answers) =>
+          fs
+            .readdirSync(answers.directory)
+            .filter((project) =>
+              fs.statSync(path.join(answers.directory, project)).isDirectory()
+            ),
       },
     ])
     .then((answers) => {
-      openProject(path.join(projectsFolder, answers.project));
+      openProject(path.join(answers.directory, answers.project));
     });
 };
 
 const createConfig = () => {
+  const configFile = JSON.parse(fs.readFileSync(configFilePath, "utf8"));
+
   inquirer
     .prompt([
       {
         type: "input",
-        name: "projectDir",
-        message: "Enter your projects directory",
+        name: "newDir",
+        message: "Enter your projects directory:",
         default: process.cwd(),
       },
     ])
     .then((answers) => {
-      fs.writeFileSync(
-        configFilePath,
-        JSON.stringify({ projectDir: answers.projectDir }, null, 2)
-      );
+      configFile.projectsDirs.push(path.normalize(answers.newDir));
+      fs.writeFileSync(configFilePath, JSON.stringify(configFile, null, 2));
       showProjects();
     });
 };
 
+//Starts here
 if (!configExists) {
+  fs.writeFileSync(
+    configFilePath,
+    JSON.stringify({ projectsDirs: [] }, null, 2)
+  );
   createConfig();
 } else {
   showProjects();
+  //MENU HERE
 }
