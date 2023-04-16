@@ -5,6 +5,13 @@ import os from "os";
 import path from "path";
 import inquirer from "inquirer";
 import { spawn } from "child_process";
+import {
+  directoriesList,
+  newDirQuestion,
+  projectsList,
+  updateConfigConfirmation,
+  updateConfigOptions,
+} from "./questions.js";
 
 const configFilePath = path.join(os.homedir(), "/pmanrc.json");
 const configExists = fs.existsSync(configFilePath);
@@ -23,60 +30,35 @@ const start = () => {
 
   inquirer
     .prompt([
+      updateConfigConfirmation,
       {
-        type: "confirm",
-        name: "updateConfig",
-        message: "Do you want to update your directories?",
-        default: false,
-      },
-      {
-        type: "list",
-        name: "updateOption",
-        message: "What do you want to do?",
-        choices: [
-          "Add new directory",
-          "Edit a directory",
-          "Remove a directory",
-        ],
+        ...updateConfigOptions,
         when: (answers) => answers.updateConfig,
       },
       {
-        type: "list",
-        name: "editDir",
-        message: "Choose the directory you want to edit:",
-        choices: config.projectsDirs,
+        ...directoriesList("editDir", config),
         when: (answers) =>
           answers.updateConfig && answers.updateOption.startsWith("Edit"),
       },
       {
-        type: "input",
-        name: "newDir",
-        message: "Enter the path of the new directory:",
-        default: process.cwd(),
+        ...newDirQuestion,
         when: (answers) =>
           answers.updateConfig &&
           (answers.updateOption.startsWith("Add") ||
             answers.updateOption.startsWith("Edit")),
       },
       {
-        type: "list",
-        name: "removeDir",
-        message: "Choose the directory you want to remove:",
-        choices: config.projectsDirs,
+        ...directoriesList("removeDir", config),
         when: (answers) =>
           answers.updateConfig && answers.updateOption.startsWith("Remove"),
       },
       {
-        type: "list",
-        name: "directory",
-        message: "Choose a directory:",
+        ...directoriesList("directory", config),
         choices: config.projectsDirs,
         when: (answers) => !answers.updateConfig,
       },
       {
-        type: "list",
-        name: "project",
-        message: "Choose a project:",
+        ...projectsList,
         choices: (answers) =>
           fs
             .readdirSync(answers.directory)
@@ -119,20 +101,11 @@ const start = () => {
 if (configExists) {
   start();
 } else {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "newDir",
-        message: "Enter the path of the new directory:",
-        default: process.cwd(),
-      },
-    ])
-    .then((answers) => {
-      fs.writeFileSync(
-        configFilePath,
-        JSON.stringify({ projectsDirs: [answers.newDir] }, null, 2)
-      );
-      start();
-    });
+  inquirer.prompt([newDirQuestion]).then((answers) => {
+    fs.writeFileSync(
+      configFilePath,
+      JSON.stringify({ projectsDirs: [answers.newDir] }, null, 2)
+    );
+    start();
+  });
 }
