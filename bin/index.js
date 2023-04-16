@@ -13,11 +13,11 @@ import {
   updateConfigOptions,
 } from "./questions.js";
 
-const configFilePath = path.join(os.homedir(), "/pmanrc.json");
-const configExists = fs.existsSync(configFilePath);
+const CONFIG_PATH = path.join(os.homedir(), "/pmanrc.json");
+const configExists = fs.existsSync(CONFIG_PATH);
 
 const readConfig = () => {
-  return JSON.parse(fs.readFileSync(configFilePath, "utf8"));
+  return JSON.parse(fs.readFileSync(CONFIG_PATH, "utf8"));
 };
 
 const openProject = (projectPath) => {
@@ -31,10 +31,7 @@ const start = () => {
   inquirer
     .prompt([
       updateConfigConfirmation,
-      {
-        ...updateConfigOptions,
-        when: (answers) => answers.updateConfig,
-      },
+      updateConfigOptions,
       {
         ...directoriesList("editDir", config),
         when: (answers) =>
@@ -57,17 +54,7 @@ const start = () => {
         choices: config.projectsDirs,
         when: (answers) => !answers.updateConfig,
       },
-      {
-        ...projectsList,
-        choices: (answers) =>
-          fs
-            .readdirSync(answers.directory)
-            .filter((project) =>
-              fs.statSync(path.join(answers.directory, project)).isDirectory()
-            ),
-        when: (answers) =>
-          !answers.updateConfig && answers.directory.length > 0,
-      },
+      projectsList,
     ])
     .then((answers) => {
       if (answers.updateConfig) {
@@ -90,7 +77,7 @@ const start = () => {
 
             break;
         }
-        fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2));
+        fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
         start(config);
       } else {
         openProject(path.join(answers.directory, answers.project));
@@ -103,7 +90,7 @@ if (configExists) {
 } else {
   inquirer.prompt([newDirQuestion]).then((answers) => {
     fs.writeFileSync(
-      configFilePath,
+      CONFIG_PATH,
       JSON.stringify({ projectsDirs: [answers.newDir] }, null, 2)
     );
     start();

@@ -1,3 +1,6 @@
+import fs from "fs";
+import path from "path";
+
 export const newDirQuestion = {
   type: "input",
   name: "newDir",
@@ -17,6 +20,7 @@ export const updateConfigOptions = {
   name: "updateOption",
   message: "What do you want to do?",
   choices: ["Add new directory", "Edit a directory", "Remove a directory"],
+  when: (answers) => answers.updateConfig,
 };
 
 export const directoriesList = (name, config) => {
@@ -32,4 +36,11 @@ export const projectsList = {
   type: "list",
   name: "project",
   message: "Choose a project:",
+  choices: (answers) =>
+    fs
+      .readdirSync(answers.directory)
+      .filter((project) =>
+        fs.statSync(path.join(answers.directory, project)).isDirectory()
+      ),
+  when: (answers) => !answers.updateConfig && answers.directory.length > 0,
 };
