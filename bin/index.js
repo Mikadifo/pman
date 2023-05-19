@@ -77,6 +77,9 @@ const start = () => {
             console.log("Removed " + answers.removeDir);
 
             break;
+          case "Open":
+            console.info(`Your config file is located at: ${CONFIG_PATH}`);
+            break;
         }
         fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
         start(config);

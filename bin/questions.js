@@ -11,7 +11,7 @@ export const newDirQuestion = {
 export const updateConfigConfirmation = {
   type: "confirm",
   name: "updateConfig",
-  message: "Do you want to update your directories?",
+  message: "Do you want to update your configuration?",
   default: false,
 };
 
@@ -19,7 +19,12 @@ export const updateConfigOptions = {
   type: "list",
   name: "updateOption",
   message: "What do you want to do?",
-  choices: ["Add new directory", "Edit a directory", "Remove a directory"],
+  choices: [
+    "Add new directory",
+    "Edit a directory",
+    "Remove a directory",
+    "Open config file",
+  ],
   when: (answers) => answers.updateConfig,
 };
 
