@@ -20,8 +20,8 @@ const readConfig = () => {
   return JSON.parse(fs.readFileSync(CONFIG_PATH, "utf8"));
 };
 
-const openProject = (projectPath) => {
-  spawn("open", ["-a", "iTerm", projectPath]);
+const openProject = (projectPath, config) => {
+  spawn("open", ["-a", config.terminal, projectPath]);
   console.log("Project opened in a new tab. You can close this tab now.");
 };
 
@@ -80,7 +80,7 @@ const start = () => {
         fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
         start(config);
       } else {
-        openProject(path.join(answers.directory, answers.project));
+        openProject(path.join(answers.directory, answers.project), config);
       }
     });
 };
