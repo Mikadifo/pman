@@ -44,3 +44,10 @@ export const projectsList = {
       ),
   when: (answers) => !answers.updateConfig && answers.directory.length > 0,
 };
+
+export const terminalList = {
+  type: "list",
+  name: "terminal",
+  message: "Choose a terminal to open your projects:",
+  choices: ["iTerm", "Terminal"],
+};

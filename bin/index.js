@@ -9,6 +9,7 @@ import {
   directoriesList,
   newDirQuestion,
   projectsList,
+  terminalList,
   updateConfigConfirmation,
   updateConfigOptions,
 } from "./questions.js";
@@ -88,10 +89,14 @@ const start = () => {
 if (configExists) {
   start();
 } else {
-  inquirer.prompt([newDirQuestion]).then((answers) => {
+  inquirer.prompt([newDirQuestion, terminalList]).then((answers) => {
     fs.writeFileSync(
       CONFIG_PATH,
-      JSON.stringify({ projectsDirs: [answers.newDir] }, null, 2)
+      JSON.stringify(
+        { projectsDirs: [answers.newDir], terminal: answers.terminal },
+        null,
+        2
+      )
     );
     start();
   });
