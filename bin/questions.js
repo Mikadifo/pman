@@ -11,7 +11,7 @@ export const newDirQuestion = {
 export const updateConfigConfirmation = {
   type: "confirm",
   name: "updateConfig",
-  message: "Do you want to update your directories?",
+  message: "Do you want to update your configuration?",
   default: false,
 };
 
@@ -19,7 +19,12 @@ export const updateConfigOptions = {
   type: "list",
   name: "updateOption",
   message: "What do you want to do?",
-  choices: ["Add new directory", "Edit a directory", "Remove a directory"],
+  choices: [
+    "Add new directory",
+    "Edit a directory",
+    "Remove a directory",
+    "Open config file",
+  ],
   when: (answers) => answers.updateConfig,
 };
 
@@ -43,4 +48,11 @@ export const projectsList = {
         fs.statSync(path.join(answers.directory, project)).isDirectory()
       ),
   when: (answers) => !answers.updateConfig && answers.directory.length > 0,
+};
+
+export const terminalList = {
+  type: "list",
+  name: "terminal",
+  message: "Choose a terminal to open your projects:",
+  choices: ["iTerm", "Terminal"],
 };

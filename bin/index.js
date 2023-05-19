@@ -9,6 +9,7 @@ import {
   directoriesList,
   newDirQuestion,
   projectsList,
+  terminalList,
   updateConfigConfirmation,
   updateConfigOptions,
 } from "./questions.js";
@@ -20,8 +21,8 @@ const readConfig = () => {
   return JSON.parse(fs.readFileSync(CONFIG_PATH, "utf8"));
 };
 
-const openProject = (projectPath) => {
-  spawn("open", ["-a", "iTerm", projectPath]);
+const openProject = (projectPath, config) => {
+  spawn("open", ["-a", config.terminal, projectPath]);
   console.log("Project opened in a new tab. You can close this tab now.");
 };
 
@@ -76,11 +77,14 @@ const start = () => {
             console.log("Removed " + answers.removeDir);
 
             break;
+          case "Open":
+            console.info(`Your config file is located at: ${CONFIG_PATH}`);
+            break;
         }
         fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
         start(config);
       } else {
-        openProject(path.join(answers.directory, answers.project));
+        openProject(path.join(answers.directory, answers.project), config);
       }
     });
 };
@@ -88,10 +92,14 @@ const start = () => {
 if (configExists) {
   start();
 } else {
-  inquirer.prompt([newDirQuestion]).then((answers) => {
+  inquirer.prompt([newDirQuestion, terminalList]).then((answers) => {
     fs.writeFileSync(
       CONFIG_PATH,
-      JSON.stringify({ projectsDirs: [answers.newDir] }, null, 2)
+      JSON.stringify(
+        { projectsDirs: [answers.newDir], terminal: answers.terminal },
+        null,
+        2
+      )
     );
     start();
   });
