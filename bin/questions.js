@@ -16,7 +16,7 @@ export const updateConfigConfirmation = {
 };
 
 export const updateConfigOptions = {
-  type: "list",
+  type: "search-list",
   name: "updateOption",
   message: "What do you want to do?",
   choices: [
@@ -30,7 +30,7 @@ export const updateConfigOptions = {
 
 export const directoriesList = (name, config) => {
   return {
-    type: "list",
+    type: "search-list",
     name,
     message: "Choose a directory:",
     choices: config.projectsDirs,
@@ -38,7 +38,7 @@ export const directoriesList = (name, config) => {
 };
 
 export const projectsList = {
-  type: "list",
+  type: "search-list",
   name: "project",
   message: "Choose a project:",
   choices: (answers) =>
@@ -51,7 +51,7 @@ export const projectsList = {
 };
 
 export const terminalList = {
-  type: "list",
+  type: "search-list",
   name: "terminal",
   message: "Choose a terminal to open your projects:",
   choices: ["iTerm", "Terminal"],
