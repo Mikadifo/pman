@@ -21,7 +21,7 @@
   "author": "Mikadifo",
   "license": "ISC",
   "dependencies": {
-    "inquirer": "^9.1.5"
-  },
-  "devDependencies": {}
+    "inquirer": "^9.1.5",
+    "inquirer-search-list": "^1.2.6"
+  }
 }

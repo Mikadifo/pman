@@ -13,6 +13,9 @@ import {
   updateConfigConfirmation,
   updateConfigOptions,
 } from "./questions.js";
+import SearchBox from "inquirer-search-list";
+
+inquirer.registerPrompt("search-list", SearchBox);
 
 const CONFIG_PATH = path.join(os.homedir(), "/pmanrc.json");
 const configExists = fs.existsSync(CONFIG_PATH);
