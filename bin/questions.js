@@ -37,7 +37,7 @@ export const directoriesList = (name, config) => {
   };
 };
 
-export const projectsList = {
+export const projectsList = (limit) => ({
   type: "search-list",
   name: "project",
   message: "Choose a project:",
@@ -46,9 +46,10 @@ export const projectsList = {
       .readdirSync(answers.directory)
       .filter((project) =>
         fs.statSync(path.join(answers.directory, project)).isDirectory()
-      ),
+      )
+      .slice(0, limit > 0 ? limit : undefined),
   when: (answers) => !answers.updateConfig && answers.directory.length > 0,
-};
+});
 
 export const terminalList = {
   type: "search-list",

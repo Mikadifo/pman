@@ -55,10 +55,9 @@ const start = () => {
       },
       {
         ...directoriesList("directory", config),
-        choices: config.projectsDirs,
         when: (answers) => !answers.updateConfig,
       },
-      projectsList,
+      projectsList(config.limit),
     ])
     .then((answers) => {
       if (answers.updateConfig) {
@@ -99,7 +98,11 @@ if (configExists) {
     fs.writeFileSync(
       CONFIG_PATH,
       JSON.stringify(
-        { projectsDirs: [answers.newDir], terminal: answers.terminal },
+        {
+          projectsDirs: [answers.newDir],
+          terminal: answers.terminal,
+          limit: 0,
+        },
         null,
         2
       )
