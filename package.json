@@ -1,6 +1,6 @@
 {
   "name": "@mikadifo/pman",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A cli that helps you list your projects and open one.",
   "repository": {
     "type": "git",
