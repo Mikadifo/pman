@@ -4,6 +4,22 @@ We often access our projects' folder using the terminal, but when you open a new
 
 **pman** is a npm package that will allow you to open your projects from the very first terminal you open.
 
+## Demo
+https://github.com/user-attachments/assets/81bfc9c6-1193-4dd9-9845-428098e1f6b9
+
+## Screenshots
+*Selecting main folder/directory:*
+
+<img width="526" alt="firstQuestion" src="https://github.com/user-attachments/assets/dab36e69-e933-46d6-a3b6-57dce0fc99e7">
+
+*Selecting project directory*
+
+<img width="551" alt="secondQuestion" src="https://github.com/user-attachments/assets/88c96268-a5e2-43da-9d35-ebd45a0aee98">
+
+*Updating configuration file:*
+
+<img width="646" alt="updatedirs" src="https://github.com/user-attachments/assets/5356cac3-b362-47f3-86f9-514919209a0d">
+
 # Installation
 
 This package has to be installed globally, to do that just run the following command:
