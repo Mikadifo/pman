@@ -9,7 +9,7 @@ import {
   directoriesList,
   newDirQuestion,
   projectsList,
-  terminalList,
+  WSL,
   updateConfigConfirmation,
   updateConfigOptions,
 } from "./questions.js";
@@ -25,7 +25,17 @@ const readConfig = () => {
 };
 
 const openProject = (projectPath, config) => {
-  spawn("open", ["-a", config.terminal, projectPath]);
+  if (config.wsl) {
+    spawn("wt.exe", ["-w", "0", "nt", "wsl", "--cd", projectPath], {
+      shell: true,
+      stdio: "inherit",
+    });
+  } else if (os.platform() === "darwin") {
+    spawn("open", ["-a", config.terminal, projectPath]);
+  } else {
+    console.log(`Platform not supported yet. (${os.platform()})`);
+  }
+
   console.log("Project opened in a new tab. You can close this tab now.");
 };
 
@@ -94,13 +104,13 @@ const start = () => {
 if (configExists) {
   start();
 } else {
-  inquirer.prompt([newDirQuestion, terminalList]).then((answers) => {
+  inquirer.prompt([newDirQuestion, WSL]).then((answers) => {
     fs.writeFileSync(
       CONFIG_PATH,
       JSON.stringify(
         {
           projectsDirs: [answers.newDir],
-          terminal: answers.terminal,
+          wsl: answers.wsl,
           limit: 0,
         },
         null,
