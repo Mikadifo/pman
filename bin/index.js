@@ -31,9 +31,17 @@ const openProject = (projectPath, config) => {
       stdio: "inherit",
     });
   } else if (os.platform() === "darwin") {
-    spawn("open", ["-a", config.terminal, projectPath]);
+    let terminal = process.env.TERM_PROGRAM;
+    if (terminal === "Apple_Terminal") {
+      terminal = "Terminal";
+    }
+    spawn("open", ["-a", terminal, projectPath], {
+      shell: true,
+      stdio: "inherit",
+    });
   } else {
     console.log(`Platform not supported yet. (${os.platform()})`);
+    return;
   }
 
   console.log("Project opened in a new tab. You can close this tab now.");
