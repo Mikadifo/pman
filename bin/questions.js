@@ -51,9 +51,9 @@ export const projectsList = (limit) => ({
   when: (answers) => !answers.updateConfig && answers.directory.length > 0,
 });
 
-export const terminalList = {
-  type: "search-list",
-  name: "terminal",
-  message: "Choose a terminal to open your projects:",
-  choices: ["iTerm", "Terminal"],
+export const WSL = {
+  type: "confirm",
+  name: "wsl",
+  message: "Are you using WSL?",
+  default: false,
 };
